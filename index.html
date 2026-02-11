@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VEYRA — Customer Success Voice AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #FFFFFF;
+      --bg-card: #F8FAFC;
+      --bg-elevated: #F1F5F9;
+      --accent: #434242;
+      --accent-light: #5A5959;
+      --accent-glow: rgba(67, 66, 66, 0.08);
+      --purple: #6366F1;
+      --purple-light: #818CF8;
+      --purple-glow: rgba(99, 102, 241, 0.08);
+      --purple-soft: rgba(99, 102, 241, 0.05);
+      --text: #1E293B;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --border: #E2E8F0;
+      --success: #10B981;
+      --danger: #EF4444;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 40px 32px;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo svg {
+      height: 28px;
+      width: auto;
+      display: block;
+    }
+    .header-contact {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 40px 0 24px;
+    }
+    .hero-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--purple);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+    .hero-headline {
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 640px;
+      line-height: 1.55;
+    }
+
+    /* ── Wave decoration ── */
+    .wave-divider {
+      padding: 8px 0;
+      overflow: hidden;
+    }
+    .wave-divider svg {
+      width: 100%;
+      height: 40px;
+      display: block;
+    }
+
+    /* ── Proof Banner ── */
+    .proof {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .proof-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 20px;
+    }
+    .proof-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .proof-context {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .proof-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .proof-value {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .proof-label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      line-height: 1.3;
+    }
+    .proof-compare {
+      display: block;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Two-column core ── */
+    .core {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      padding: 32px 0;
+    }
+    .core-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .core-block--problem {
+      border-left: 3px solid var(--text-muted);
+    }
+    .core-block--solution {
+      border-left: 3px solid var(--purple);
+    }
+    .core-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+    .core-block--solution .core-label {
+      color: var(--purple);
+    }
+    .core-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+    .core-text {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ── Video ── */
+    .video-block {
+      padding-bottom: 32px;
+    }
+    .video-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--purple);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+    .video-container video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Cases ── */
+    .cases {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding-bottom: 32px;
+    }
+    .case-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .case-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .case-client {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .case-tag {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--purple);
+      background: var(--purple-glow);
+      padding: 3px 8px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .case-task {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .case-metrics { display: flex; gap: 20px; }
+    .case-metric-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .case-metric-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+
+    /* ── CTA ── */
+    .cta {
+      background: var(--purple-soft);
+      border: 1px solid var(--purple);
+      border-radius: 12px;
+      padding: 28px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .cta-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .cta-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      max-width: 400px;
+      line-height: 1.4;
+    }
+    .cta-right { text-align: right; }
+    .cta-button {
+      display: inline-block;
+      background: var(--purple);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    .cta-button:hover { background: var(--purple-light); }
+    .cta-tg {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── Feedback ── */
+    .feedback {
+      text-align: center;
+      padding: 24px 0 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .feedback-question {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .feedback-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+    .feedback-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .feedback-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text);
+    }
+    .feedback-btn--yes:hover,
+    .feedback-btn--yes.active {
+      border-color: var(--success);
+      background: rgba(16, 185, 129, 0.06);
+      color: var(--success);
+    }
+    .feedback-btn--no:hover,
+    .feedback-btn--no.active {
+      border-color: var(--danger);
+      background: rgba(239, 68, 68, 0.06);
+      color: var(--danger);
+    }
+    .feedback-btn .icon { font-size: 1rem; }
+    .feedback-thanks {
+      display: none;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      padding: 8px 0;
+    }
+    .feedback.responded .feedback-buttons { display: none; }
+    .feedback.responded .feedback-thanks { display: block; }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 20px 0 8px;
+      text-align: center;
+    }
+    .footer-legal {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .page { padding: 24px 20px 24px; }
+      .hero-headline { font-size: 1.75rem; }
+      .proof-grid { grid-template-columns: repeat(2, 1fr); }
+      .proof-value { font-size: 1.4rem; }
+      .core { grid-template-columns: 1fr; gap: 20px; }
+      .cases { grid-template-columns: 1fr; }
+      .cta { flex-direction: column; text-align: center; gap: 16px; }
+      .cta-right { text-align: center; }
+      .cta-subtitle { max-width: none; }
+    }
+
+    /* ── Print ── */
+    @media print {
+      .page { padding: 10mm 15mm; max-width: 210mm; }
+      .video-block { display: none; }
+      .feedback { display: none; }
+      .cta { break-inside: avoid; }
+      .case-card { break-inside: avoid; }
+      .cta-button { color: var(--purple) !important; background: none !important; border: 1px solid var(--purple); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" height="28" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 2651.24 337.46">
+          <defs>
+            <style type="text/css">
+              .fil0 {fill:#434242}
+            </style>
+          </defs>
+          <g id="Layer_x0020_1">
+            <metadata id="CorelCorpID_0Corel-Layer"/>
+            <g id="_2104344724128">
+              <path class="fil0" d="M2526.73 4.07l-35.52 0 -126.27 306.91 67.08 0 21.92 -56.12 108.3 0 21.92 56.12 67.08 0 -124.52 -306.91zm-18.42 109.61l-33.32 83.74 66.2 0 -32.88 -83.74zm-456.29 -109.61l-104.35 0 0 306.91 60.5 0 0 -74.97 33.76 0c14.9,0.29 25.8,3.07 32.66,8.33 6.87,5.26 16.44,17.25 28.72,35.95l19.73 30.69 67.96 0 -26.3 -40.78c-17.54,-27.77 -32.74,-45.74 -45.6,-53.93 21.05,-8.18 37.34,-20.61 48.88,-37.27 11.55,-16.66 17.32,-36.39 17.32,-59.19 0,-33.61 -11.76,-61.31 -35.3,-83.08 -23.53,-21.78 -56.19,-32.66 -97.99,-32.66zm-43.85 57l0 117.94 49.55 0c21.04,0 38,-4.97 50.86,-14.91 12.87,-9.94 19.29,-24.7 19.29,-44.28 0,-18.7 -6.5,-33.18 -19.51,-43.4 -13,-10.23 -29.89,-15.35 -50.64,-15.35l-49.55 0zm-251.54 -57l-68.83 0 -70.59 129.78 -71.03 -129.78 -68.83 0 109.17 204.32 0 102.59 60.51 0 0 -102.59 109.61 -204.32zm-457.61 306.91l0 -57 -143.81 0 0 -68.83 132.85 0 0 -57 -132.85 0 0 -67.08 143.81 0 0 -57 -204.31 0 0 306.91 204.31 0zm-404.99 -306.91l-67.08 0 -76.73 195.98 -76.73 -195.98 -67.08 0 126.71 306.91 35.95 0 124.96 -306.91z"/>
+              <path class="fil0" d="M409.9 25.23l-26.75 48.24c-5.1,9.25 -14.61,9.53 -18.77,2.47 -5.4,-9.17 -12.28,-13.26 -19.59,-1l-1.11 1.87c-5.14,8.62 -15.83,7.4 -18.77,-0.72l-8.99 -24.9c-2.57,-7.12 -14.65,-8.72 -18.53,-0.83l-7.02 14.26c-1.63,1.99 -4.52,3.43 -7.77,3.43 -4.74,0 -8.73,-3.08 -9.77,-7.02l-17.87 -61.03 137.75 0c10.41,0.04 18.83,8.05 18.83,17.92 0,2.6 -0.58,5.07 -1.64,7.31zm-44.44 80.68l-112.82 204.78c-9.07,16.4 -27.02,26.77 -46.79,26.77 -20,0 -37.41,-10.54 -46.38,-26.06l-111.42 -202.56c-5.88,-10.69 10.25,-15.89 16.42,-4.56l4.21 7.73c4.99,9.18 15.66,2.65 20.86,12.63l10.6 20.34c2.53,6.62 12.87,6.91 16.04,0.22l13.09 -28.2c7.09,-12.12 25.4,-10.31 29.39,2.73l25.32 135.49c2.5,13.35 23.82,13.64 26.11,0.26l21.76 -127.18c2.57,-11.76 20.44,-13.35 25.55,-1.33l14.87 46.21c2.44,7.99 14.19,8.18 16.76,0.31l19.41 -63.44c2.44,-7.99 15.12,-7.74 15.27,1.44 0.48,7.03 12.56,10.75 17.29,1.58l4.49 -9.38c6.53,-13.62 24.39,-5.81 19.97,2.21zm-338.48 -35.37l-24.51 -44.55c-7.16,-13 2.05,-25.98 16.64,-25.98l211.06 0 -24.63 71.18c-3.52,10.03 -18.1,10.57 -21.3,0.06l-11.64 -38.19c-2.49,-8.16 -15.04,-7.8 -17.6,-0.62l-15.84 44.4c-2.88,8.07 -16.27,9.64 -20.79,1.07l-14.22 -26.93c-3.03,-7 -12.33,-6.41 -15.01,-1.54l-13.37 24.31c-1.87,3.4 -7.78,3.81 -10.64,1.08l-6.93 -11.08c-2.86,-4.58 -11.17,-4.82 -14.25,0.2 -4.31,7.01 -12.67,14.43 -16.98,6.6z"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="header-contact">team@myveyra.ai</div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <span class="hero-label">Customer Success Voice AI</span>
+      <h1 class="hero-headline">Возвращаем выручку<br>из потерь в клиентских коммуникациях</h1>
+      <p class="hero-sub">Готовые голосовые AI-агенты для критических точек воронки. Находим, где бизнес теряет деньги из-за бездействия клиентов, и внедряем агента, который возвращает их к целевым действиям.</p>
+    </section>
+
+    <!-- Wave decoration -->
+    <div class="wave-divider">
+      <svg viewBox="0 0 900 40" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0 22 C150 8, 300 36, 450 20 S750 8, 900 22" stroke="#6366F1" stroke-width="1.5" opacity="0.25" fill="none"/>
+        <path d="M0 26 C200 12, 350 38, 500 24 S780 12, 900 28" stroke="#818CF8" stroke-width="1" opacity="0.15" fill="none"/>
+        <path d="M0 18 C180 34, 320 6, 480 22 S720 34, 900 16" stroke="#6366F1" stroke-width="1" opacity="0.12" fill="none"/>
+      </svg>
+    </div>
+
+    <!-- Proof Banner -->
+    <section class="proof">
+      <div class="proof-header">
+        <span class="proof-title">Результаты внедрений</span>
+        <span class="proof-context">Кейс T-Bank — верификация через Госуслуги</span>
+      </div>
+      <div class="proof-grid">
+        <div class="proof-card">
+          <span class="proof-value">85K</span>
+          <span class="proof-label">клиентов обзвонено за неделю</span>
+        </div>
+        <div class="proof-card">
+          <span class="proof-value">60%</span>
+          <span class="proof-label">дозвон до абонента</span>
+          <span class="proof-compare">vs &lt;15% open rate push</span>
+        </div>
+        <div class="proof-card">
+          <span class="proof-value">3.1%</span>
+          <span class="proof-label">конверсия в целевое действие в момент звонка</span>
+        </div>
+        <div class="proof-card">
+          <span class="proof-value">2.5x</span>
+          <span class="proof-label">дешевле колл-центра</span>
+          <span class="proof-compare">при сопоставимом качестве</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core: Problem + Solution -->
+    <section class="core">
+      <div class="core-block core-block--problem">
+        <span class="core-label">Проблема</span>
+        <h2 class="core-title">Текстовые каналы достигли потолка, а звонки не масштабируются</h2>
+        <p class="core-text">Push, email, SMS работают в одну сторону — open rate ниже 15%, и клиент должен сам перейти, найти, заполнить. Звонок эффективнее в разы, но живой оператор стоит 35+ ₽/мин и не масштабируется. Между этими полюсами — зона, где бизнес каждый день теряет деньги.</p>
+      </div>
+      <div class="core-block core-block--solution">
+        <span class="core-label">Решение</span>
+        <h2 class="core-title">Готовый AI-агент в точке, где вы теряете клиентов</h2>
+        <p class="core-text">VEYRA — не платформа-конструктор, а готовый агент, работающий с первого дня. Находим бутылочное горлышко в воронке, внедряем голосового агента — клиент совершает действие прямо в момент звонка. Масштаб рассылки, эффективность оператора.</p>
+      </div>
+    </section>
+
+    <section class="video-block">
+      <div class="video-label">Как это работает</div>
+      <div class="video-container">
+        <video
+          src="veyra-demo.mp4"
+          controls
+          playsinline
+          preload="metadata"
+        ></video>
+      </div>
+    </section>
+
+    <!-- Cases -->
+    <section class="cases">
+      <div class="case-card">
+        <div class="case-header">
+          <span class="case-client">T-Bank</span>
+          <span class="case-tag">Финтех</span>
+        </div>
+        <p class="case-task">Массовая верификация клиентов через Госуслуги — push-уведомления не справлялись, звонок проводит через процесс шаг за шагом</p>
+        <div class="case-metrics">
+          <span><span class="case-metric-value">80K</span><span class="case-metric-label">звонков/нед</span></span>
+          <span><span class="case-metric-value">60%</span><span class="case-metric-label">дозвон</span></span>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-header">
+          <span class="case-client">36.6</span>
+          <span class="case-tag">Ритейл</span>
+        </div>
+        <p class="case-task">Внутренний helpdesk для провизоров — AI-агент собирает данные, создаёт тикет и выдаёт номер заявки за одно касание</p>
+        <div class="case-metrics">
+          <span><span class="case-metric-value">95%</span><span class="case-metric-label">качество</span></span>
+          <span><span class="case-metric-value">0 сек</span><span class="case-metric-label">ожидание</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div>
+        <div class="cta-title">Диагностическая сессия — 30 минут</div>
+        <div class="cta-subtitle">Разберём вашу задачу, найдём бутылочные горлышки в воронке и предложим сценарий пилота</div>
+      </div>
+      <div class="cta-right">
+        <a href="mailto:team@myveyra.ai?subject=Диагностическая сессия VEYRA" class="cta-button">Записаться</a>
+        <span class="cta-tg">TG: @dolgovalex</span>
+      </div>
+    </section>
+
+    <!-- Feedback -->
+    <section class="feedback" id="feedback">
+      <div class="feedback-question">Был ли полезен этот материал?</div>
+      <div class="feedback-buttons">
+        <button class="feedback-btn feedback-btn--yes" onclick="sendFeedback('interested')">
+          <span class="icon">&#x1F44D;</span> Интересно
+        </button>
+        <button class="feedback-btn feedback-btn--no" onclick="sendFeedback('not_relevant')">
+          <span class="icon">&#x1F44E;</span> Не актуально
+        </button>
+      </div>
+      <div class="feedback-thanks">Спасибо за обратную связь!</div>
+    </section>
+
+    <!-- Footer: legal -->
+    <footer class="footer">
+      <div class="footer-legal">
+        ООО «Пятый Элемент» &middot; ИНН 9703222035 &middot; ОГРН 1257700394489<br>
+        123112, Москва, наб. Пресненская, д. 12, помещ. 10/45
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // Feedback tracking
+    // Replace WEBHOOK_URL with your endpoint (e.g., Google Apps Script, n8n, or custom API)
+    // CLIENT_ID is replaced when generating a personalized one-pager
+    var WEBHOOK_URL = ''; // e.g., 'https://myveyra.ai/api/feedback'
+    var CLIENT_ID = '';   // e.g., 'tbank', 'suvvy'
+    var PAGE_ID = 'one_pager';
+
+    function sendFeedback(response) {
+      var section = document.getElementById('feedback');
+      if (section.classList.contains('responded')) return;
+      section.classList.add('responded');
+
+      var payload = {
+        page: PAGE_ID,
+        client: CLIENT_ID,
+        response: response,
+        timestamp: new Date().toISOString(),
+        url: window.location.href
+      };
+
+      // Send to webhook if configured
+      if (WEBHOOK_URL) {
+        try {
+          navigator.sendBeacon(WEBHOOK_URL, JSON.stringify(payload));
+        } catch (e) {
+          // Fallback: try fetch
+          fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }).catch(function() {});
+        }
+      }
+
+      // Also send via mailto as fallback notification
+      if (!WEBHOOK_URL) {
+        var subject = encodeURIComponent('One-pager feedback: ' + response + (CLIENT_ID ? ' [' + CLIENT_ID + ']' : ''));
+        var body = encodeURIComponent('Response: ' + response + '\nClient: ' + (CLIENT_ID || 'general') + '\nTime: ' + payload.timestamp + '\nURL: ' + payload.url);
+        // Open in background — user already clicked, just log
+        var a = document.createElement('a');
+        a.href = 'mailto:team@myveyra.ai?subject=' + subject + '&body=' + body;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        // Don't auto-click to avoid annoying UX — just store locally
+      }
+
+      // Store locally to prevent duplicate feedback
+      try { localStorage.setItem('veyra_feedback_' + PAGE_ID + '_' + CLIENT_ID, response); } catch(e) {}
+    }
+
+    // Check if already responded
+    (function() {
+      try {
+        var stored = localStorage.getItem('veyra_feedback_' + PAGE_ID + '_' + CLIENT_ID);
+        if (stored) {
+          document.getElementById('feedback').classList.add('responded');
+        }
+      } catch(e) {}
+    })();
+  </script>
+</body>
+</html>
