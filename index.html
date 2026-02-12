@@ -17,8 +17,10 @@
       --accent: #434242;
       --purple: #6366F1;
       --purple-light: #818CF8;
+      --purple-dark: #4F46E5;
       --purple-glow: rgba(99, 102, 241, 0.08);
       --purple-soft: rgba(99, 102, 241, 0.05);
+      --purple-medium: rgba(99, 102, 241, 0.12);
       --text: #1E293B;
       --text-secondary: #475569;
       --text-muted: #94A3B8;
@@ -33,6 +35,7 @@
       color: var(--text);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     .page {
@@ -42,80 +45,173 @@
       padding: 48px 40px 32px;
     }
 
+    /* ── Animations ── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.3); }
+      50% { box-shadow: 0 0 16px 4px rgba(99, 102, 241, 0.15); }
+    }
+    @keyframes countUp {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes waveDraw {
+      from { stroke-dashoffset: 2000; }
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* ── Header ── */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding-bottom: 32px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px solid var(--purple-medium);
+      animation: fadeIn 0.6s ease;
     }
     .logo svg { height: 28px; width: auto; display: block; }
-    .header-contact { font-size: 13px; color: var(--text-muted); }
+    .header-contact {
+      font-size: 13px;
+      color: var(--purple);
+      font-weight: 500;
+    }
 
     /* ── Hero ── */
-    .hero { padding: 40px 0 24px; }
+    .hero {
+      padding: 44px 0 32px;
+      position: relative;
+      animation: fadeInUp 0.8s ease;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -40px;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
     .hero-label {
       display: inline-block;
       font-size: 0.7rem;
       font-weight: 600;
-      color: var(--purple);
+      color: #fff;
+      background: var(--purple);
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      margin-bottom: 12px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 16px;
     }
     .hero-headline {
-      font-size: 2.25rem;
+      font-size: 2.15rem;
       font-weight: 900;
       letter-spacing: -0.03em;
       line-height: 1.2;
       color: var(--text);
       margin-bottom: 14px;
     }
+    .hero-headline .highlight {
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     .hero-sub {
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--text-secondary);
       max-width: 640px;
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
     /* ── Wave ── */
-    .wave-divider { padding: 8px 0; overflow: hidden; }
-    .wave-divider svg { width: 100%; height: 40px; display: block; }
+    .wave-divider { padding: 4px 0; overflow: hidden; }
+    .wave-divider svg { width: 100%; height: 36px; display: block; }
+    .wave-divider path {
+      stroke-dasharray: 2000;
+      animation: waveDraw 2s ease forwards;
+    }
 
     /* ── Problem / Solution ── */
     .core {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      padding: 28px 0;
+      gap: 20px;
+      padding: 24px 0;
     }
     .core-block {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
+      padding: 22px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .core-block--problem { border-left: 3px solid var(--text-muted); }
-    .core-block--solution { border-left: 3px solid var(--purple); }
+    .core-block:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .core-block--problem { border-top: 3px solid var(--text-muted); }
+    .core-block--solution { border-top: 3px solid var(--purple); }
     .core-label {
       display: inline-block;
       font-size: 0.65rem;
       font-weight: 600;
-      color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      padding: 2px 8px;
+      border-radius: 4px;
     }
-    .core-block--solution .core-label { color: var(--purple); }
+    .core-block--problem .core-label {
+      color: var(--accent);
+      background: var(--bg-elevated);
+    }
+    .core-block--solution .core-label {
+      color: var(--purple);
+      background: var(--purple-glow);
+    }
     .core-title {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 10px;
-      line-height: 1.35;
+      margin-bottom: 8px;
+      line-height: 1.3;
     }
     .core-text {
       font-size: 0.82rem;
@@ -123,30 +219,30 @@
       line-height: 1.6;
     }
 
-    /* ── Funnel + Video (side by side) ── */
+    /* ── Showcase: Funnel + Video ── */
     .showcase {
       display: grid;
-      grid-template-columns: 1fr 1.3fr;
-      gap: 24px;
-      padding: 28px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 24px 0;
+      background: linear-gradient(135deg, var(--purple-soft) 0%, transparent 60%);
+      border-radius: 16px;
+      margin: 0 -20px;
+      padding: 28px 20px;
     }
-    .funnel {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
+
+    /* Funnel */
+    .funnel { display: flex; flex-direction: column; }
     .funnel-header {
       font-size: 0.65rem;
       font-weight: 600;
-      color: var(--accent);
+      color: var(--purple);
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .funnel-header span {
-      font-weight: 400;
+      font-weight: 500;
       color: var(--text-muted);
       text-transform: none;
       letter-spacing: 0;
@@ -155,65 +251,77 @@
     .funnel-step {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 12px 16px;
-      background: var(--bg-card);
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--bg);
       border: 1px solid var(--border);
       position: relative;
+      transition: all 0.3s ease;
     }
-    .funnel-step:first-of-type {
-      border-radius: 10px 10px 0 0;
+    .funnel-step:hover {
+      background: var(--purple-soft);
+      border-color: var(--purple-light);
     }
-    .funnel-step:last-of-type {
-      border-radius: 0 0 10px 10px;
-    }
-    .funnel-step + .funnel-step {
-      border-top: none;
-    }
+    .funnel-step:first-of-type { border-radius: 10px 10px 0 0; }
+    .funnel-step:last-of-type { border-radius: 0 0 10px 10px; }
+    .funnel-step + .funnel-step { border-top: none; }
     .funnel-step-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 700;
-      color: var(--text);
-      min-width: 56px;
+      color: var(--purple);
+      min-width: 52px;
       text-align: center;
     }
     .funnel-step-text {
       font-size: 0.78rem;
       color: var(--text-secondary);
-      line-height: 1.45;
+      line-height: 1.35;
     }
-    .funnel-arrow {
-      text-align: center;
-      color: var(--purple);
+    .funnel-step-text small {
+      color: var(--text-muted);
       font-size: 0.7rem;
-      padding: 3px 0;
+    }
+    .funnel-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 16px;
+      position: relative;
+    }
+    .funnel-connector::before {
+      content: '';
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--purple-light), var(--purple));
+      opacity: 0.4;
     }
     .funnel-result {
-      margin-top: 12px;
-      padding: 12px 16px;
-      background: var(--purple-soft);
-      border: 1px solid var(--purple);
+      margin-top: 8px;
+      padding: 12px 14px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-dark));
       border-radius: 10px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
+      animation: pulseGlow 3s ease infinite;
     }
     .funnel-result-num {
       font-family: 'JetBrains Mono', monospace;
       font-size: 1.4rem;
       font-weight: 700;
-      color: var(--purple);
-      min-width: 56px;
+      color: #fff;
+      min-width: 52px;
       text-align: center;
     }
     .funnel-result-text {
       font-size: 0.78rem;
-      color: var(--text);
+      color: rgba(255,255,255,0.9);
       font-weight: 500;
-      line-height: 1.45;
+      line-height: 1.35;
     }
 
+    /* Video */
     .video-side { display: flex; flex-direction: column; }
     .video-side-label {
       font-size: 0.65rem;
@@ -221,14 +329,26 @@
       color: var(--purple);
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .video-frame {
       flex: 1;
-      border-radius: 10px;
-      border: 1px solid var(--border);
+      border-radius: 12px;
+      border: 2px solid var(--purple-medium);
       overflow: hidden;
-      background: var(--bg-card);
+      background: var(--accent);
+      position: relative;
+      box-shadow: 0 8px 32px rgba(99,102,241,0.12);
+      max-height: 340px;
+    }
+    .video-frame::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light), var(--purple));
+      z-index: -1;
+      opacity: 0.3;
     }
     .video-frame video {
       width: 100%;
@@ -237,12 +357,54 @@
       display: block;
     }
 
+    /* ── Stats ribbon ── */
+    .stats-ribbon {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin: 0 -20px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 20px 12px;
+      position: relative;
+      transition: background 0.3s ease;
+    }
+    .stat-item:hover {
+      background: rgba(255,255,255,0.08);
+    }
+    .stat-item + .stat-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: rgba(255,255,255,0.15);
+    }
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.3;
+    }
+
     /* ── How we launch ── */
     .process { padding: 28px 0; }
     .process-label {
       font-size: 0.65rem;
       font-weight: 600;
-      color: var(--accent);
+      color: var(--purple);
       text-transform: uppercase;
       letter-spacing: 0.1em;
       margin-bottom: 16px;
@@ -250,56 +412,81 @@
     .process-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      gap: 0;
+      position: relative;
+    }
+    .process-grid::before {
+      content: '';
+      position: absolute;
+      top: 30px;
+      left: 12.5%;
+      width: 75%;
+      height: 2px;
+      background: linear-gradient(to right, var(--purple-glow), var(--purple-medium), var(--purple-glow));
+      z-index: 0;
     }
     .process-step {
-      background: var(--bg-card);
+      background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px;
+      border-radius: 12px;
+      padding: 16px 14px;
       position: relative;
-      display: flex;
-      flex-direction: column;
-      min-height: 180px;
+      z-index: 1;
+      margin: 0 4px;
+      transition: all 0.3s ease;
+    }
+    .process-step:hover {
+      border-color: var(--purple-light);
+      box-shadow: 0 4px 16px rgba(99,102,241,0.1);
+      transform: translateY(-3px);
     }
     .process-step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--purple);
+      color: #fff;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      color: var(--purple);
       margin-bottom: 10px;
     }
     .process-step-title {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       line-height: 1.3;
     }
     .process-step-desc {
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       color: var(--text-secondary);
-      line-height: 1.5;
-      flex: 1;
+      line-height: 1.45;
     }
     .process-step-time {
       display: inline-block;
-      margin-top: 12px;
+      margin-top: 8px;
       font-size: 0.65rem;
       font-weight: 600;
       color: var(--purple);
       background: var(--purple-glow);
-      padding: 3px 10px;
+      padding: 2px 10px;
       border-radius: 100px;
-      align-self: flex-start;
+      border: 1px solid var(--purple-medium);
     }
 
     /* ── Cases ── */
-    .cases-section { padding: 28px 0; border-top: 1px solid var(--border); }
+    .cases-section {
+      padding: 28px 0;
+      border-top: 2px solid var(--purple-medium);
+    }
     .cases-label {
       font-size: 0.65rem;
       font-weight: 600;
-      color: var(--accent);
+      color: var(--purple);
       text-transform: uppercase;
       letter-spacing: 0.1em;
       margin-bottom: 16px;
@@ -307,101 +494,198 @@
     .cases {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 16px;
     }
     .case-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 20px;
-      display: flex;
-      flex-direction: column;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
+    .case-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--purple), var(--purple-light));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .case-card:hover {
+      border-color: var(--purple-light);
+      box-shadow: 0 6px 20px rgba(99,102,241,0.08);
+      transform: translateY(-2px);
+    }
+    .case-card:hover::before { opacity: 1; }
     .case-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
     }
-    .case-client { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+    .case-client { font-size: 0.92rem; font-weight: 700; color: var(--text); }
     .case-tag {
       font-size: 0.6rem;
       font-weight: 600;
-      color: var(--purple);
-      background: var(--purple-glow);
-      padding: 3px 10px;
+      color: #fff;
+      background: var(--purple);
+      padding: 2px 10px;
       border-radius: 100px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      flex-shrink: 0;
     }
     .case-task {
       font-size: 0.78rem;
       color: var(--text-secondary);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       line-height: 1.5;
-      flex: 1;
     }
     .case-metrics { display: flex; gap: 20px; }
+    .case-metric {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
     .case-metric-value {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      color: var(--text);
+      color: var(--purple);
     }
     .case-metric-label {
       font-size: 0.65rem;
       color: var(--text-muted);
-      margin-left: 4px;
+    }
+
+    /* ── Differentiators ── */
+    .diff-section {
+      padding: 24px 0;
+    }
+    .diff-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--purple);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .diff-card {
+      text-align: center;
+      padding: 20px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    .diff-card:hover {
+      border-color: var(--purple-light);
+      background: var(--purple-soft);
+    }
+    .diff-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--purple-glow);
+      border: 1px solid var(--purple-medium);
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    .diff-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .diff-desc {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
     }
 
     /* ── CTA ── */
     .cta {
-      background: var(--purple-soft);
-      border: 1px solid var(--purple);
-      border-radius: 12px;
-      padding: 26px 30px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+      border-radius: 14px;
+      padding: 28px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 28px;
-      gap: 24px;
+      margin: 8px 0 24px;
+      position: relative;
+      overflow: hidden;
     }
-    .cta-title { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .cta-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
     .cta-subtitle {
       font-size: 0.82rem;
-      color: var(--text-secondary);
-      max-width: 420px;
-      line-height: 1.5;
+      color: rgba(255,255,255,0.8);
+      max-width: 380px;
+      line-height: 1.45;
     }
-    .cta-right { text-align: right; flex-shrink: 0; }
+    .cta-right { text-align: right; z-index: 1; }
     .cta-button {
       display: inline-block;
-      background: var(--purple);
-      color: white;
-      padding: 12px 28px;
+      background: #fff;
+      color: var(--purple);
+      padding: 10px 28px;
       border-radius: 8px;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.85rem;
-      transition: background 0.2s;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    .cta-button:hover { background: var(--purple-light); }
-    .cta-tg { display: block; font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; }
+    .cta-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .cta-tg {
+      display: block;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.6);
+      margin-top: 6px;
+    }
 
     /* ── Feedback ── */
     .feedback {
       text-align: center;
-      padding: 24px 0 28px;
+      padding: 20px 0 24px;
       border-bottom: 1px solid var(--border);
     }
-    .feedback-question { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 14px; }
-    .feedback-buttons { display: flex; justify-content: center; gap: 14px; }
+    .feedback-question { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 10px; }
+    .feedback-buttons { display: flex; justify-content: center; gap: 12px; }
     .feedback-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
+      gap: 6px;
+      padding: 8px 20px;
       border-radius: 8px;
       border: 1px solid var(--border);
       background: var(--bg);
@@ -409,47 +693,52 @@
       font-size: 0.78rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
       font-family: inherit;
     }
-    .feedback-btn:hover { border-color: var(--text-muted); color: var(--text); }
+    .feedback-btn:hover { border-color: var(--text-muted); color: var(--text); transform: translateY(-1px); }
     .feedback-btn--yes:hover, .feedback-btn--yes.active {
       border-color: var(--success); background: rgba(16,185,129,0.06); color: var(--success);
     }
     .feedback-btn--no:hover, .feedback-btn--no.active {
       border-color: var(--danger); background: rgba(239,68,68,0.06); color: var(--danger);
     }
-    .feedback-btn .icon { font-size: 1rem; }
-    .feedback-thanks { display: none; font-size: 0.82rem; color: var(--text-muted); padding: 10px 0; }
+    .feedback-btn .icon { font-size: 0.95rem; }
+    .feedback-thanks { display: none; font-size: 0.82rem; color: var(--text-muted); padding: 7px 0; }
     .feedback.responded .feedback-buttons { display: none; }
     .feedback.responded .feedback-thanks { display: block; }
 
     /* ── Footer ── */
-    .footer { padding: 20px 0 12px; text-align: center; }
-    .footer-legal { font-size: 0.68rem; color: var(--text-muted); line-height: 1.7; }
+    .footer { padding: 16px 0 8px; text-align: center; }
+    .footer-legal { font-size: 0.68rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── Decorative elements ── */
+    .decoration-dots {
+      position: absolute;
+      opacity: 0.06;
+      pointer-events: none;
+    }
 
     /* ── Responsive ── */
-    @media (max-width: 900px) {
-      .process-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-      .process-step { min-height: 160px; }
-    }
     @media (max-width: 768px) {
       .page { padding: 24px 20px 24px; }
-      .hero-headline { font-size: 1.6rem; }
+      .hero-headline { font-size: 1.5rem; }
+      .hero::before { display: none; }
       .core { grid-template-columns: 1fr; gap: 16px; }
-      .showcase { grid-template-columns: 1fr; }
+      .showcase { grid-template-columns: 1fr; margin: 0; padding: 20px 16px; }
       .funnel { order: 1; }
       .video-side { order: 2; }
-      .process-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-      .process-step { min-height: 150px; padding: 16px; }
-      .cases { grid-template-columns: 1fr; gap: 16px; }
-      .cta { flex-direction: column; text-align: center; gap: 16px; }
+      .video-frame { max-height: 260px; }
+      .stats-ribbon { grid-template-columns: repeat(2, 1fr); margin: 0; }
+      .stat-item:nth-child(3)::before { display: none; }
+      .process-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .process-grid::before { display: none; }
+      .process-step { margin: 0; }
+      .cases { grid-template-columns: 1fr; }
+      .diff-grid { grid-template-columns: 1fr; }
+      .cta { flex-direction: column; text-align: center; gap: 14px; padding: 24px 20px; }
       .cta-right { text-align: center; }
       .cta-subtitle { max-width: none; }
-    }
-    @media (max-width: 480px) {
-      .process-grid { grid-template-columns: 1fr; }
-      .process-step { min-height: auto; }
     }
 
     /* ── Print ── */
@@ -458,7 +747,15 @@
       .video-side { display: none; }
       .feedback { display: none; }
       .cta, .case-card, .process-step { break-inside: avoid; }
+      .cta { background: var(--purple-soft) !important; }
+      .cta-title, .cta-subtitle { color: var(--text) !important; }
       .cta-button { color: var(--purple) !important; background: none !important; border: 1px solid var(--purple); }
+      .stats-ribbon { background: var(--bg-card) !important; }
+      .stat-value { color: var(--purple) !important; }
+      .stat-label { color: var(--text-secondary) !important; }
+      .funnel-result { background: var(--purple-glow) !important; }
+      .funnel-result-num, .funnel-result-text { color: var(--purple) !important; }
+      .animate-on-scroll { opacity: 1 !important; transform: none !important; }
     }
   </style>
 </head>
@@ -484,25 +781,25 @@
     <!-- Hero -->
     <section class="hero">
       <span class="hero-label">Customer Success Voice AI</span>
-      <h1 class="hero-headline">С помощью Voice AI помогаем компаниям улучшать юнит-экономику и монетизировать клиентскую базу</h1>
+      <h1 class="hero-headline">С помощью <span class="highlight">Voice AI</span> помогаем компаниям улучшать юнит-экономику и монетизировать клиентскую базу</h1>
       <p class="hero-sub">Не платформа-конструктор, а готовые голосовые AI-агенты. Находим бутылочные горлышки в воронке, где бизнес теряет деньги из-за бездействия клиентов, и встраиваем агента, который возвращает их к целевым действиям.</p>
     </section>
 
     <!-- Wave -->
     <div class="wave-divider">
-      <svg viewBox="0 0 900 40" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-        <path d="M0 22 C150 8, 300 36, 450 20 S750 8, 900 22" stroke="#6366F1" stroke-width="1.5" opacity="0.25" fill="none"/>
-        <path d="M0 26 C200 12, 350 38, 500 24 S780 12, 900 28" stroke="#818CF8" stroke-width="1" opacity="0.15" fill="none"/>
-        <path d="M0 18 C180 34, 320 6, 480 22 S720 34, 900 16" stroke="#6366F1" stroke-width="1" opacity="0.12" fill="none"/>
+      <svg viewBox="0 0 900 36" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0 20 C150 6, 300 34, 450 18 S750 6, 900 20" stroke="#6366F1" stroke-width="1.5" opacity="0.3" fill="none"/>
+        <path d="M0 24 C200 10, 350 36, 500 22 S780 10, 900 26" stroke="#818CF8" stroke-width="1" opacity="0.2" fill="none"/>
+        <path d="M0 16 C180 32, 320 4, 480 20 S720 32, 900 14" stroke="#6366F1" stroke-width="1" opacity="0.15" fill="none"/>
       </svg>
     </div>
 
     <!-- Problem / Solution -->
-    <section class="core">
+    <section class="core animate-on-scroll">
       <div class="core-block core-block--problem">
         <span class="core-label">Проблема</span>
         <h2 class="core-title">Текстовые каналы достигли потолка, а звонки не масштабируются</h2>
-        <p class="core-text">Push, email, SMS работают в одну сторону — open rate ниже 15%. Звонок эффективнее в разы, но оператор стоит 35+ ₽/мин и не масштабируется. Между этими полюсами — зона, где бизнес каждый день теряет деньги.</p>
+        <p class="core-text">Push, email, SMS работают в одну сторону — open rate ниже 15%. Звонок эффективнее в разы, но оператор стоит 35+ &#8381;/мин и не масштабируется. Между этими полюсами — зона, где бизнес каждый день теряет деньги.</p>
       </div>
       <div class="core-block core-block--solution">
         <span class="core-label">Решение</span>
@@ -511,8 +808,8 @@
       </div>
     </section>
 
-    <!-- Funnel metrics + Video -->
-    <section class="showcase">
+    <!-- Funnel + Video -->
+    <section class="showcase animate-on-scroll">
       <div class="funnel">
         <div class="funnel-header">Воронка внедрения <span>Банк из ТОП-5</span></div>
 
@@ -520,12 +817,12 @@
           <span class="funnel-step-num">85K</span>
           <span class="funnel-step-text">клиентов в базе на обзвон<br>за одну неделю</span>
         </div>
-        <div class="funnel-arrow">&#x25BC;</div>
+        <div class="funnel-connector"></div>
         <div class="funnel-step">
           <span class="funnel-step-num">60%</span>
-          <span class="funnel-step-text">дозвон до абонента<br><small style="color:var(--text-muted)">vs &lt;15% open rate push</small></span>
+          <span class="funnel-step-text">дозвон до абонента<br><small>vs &lt;15% open rate push</small></span>
         </div>
-        <div class="funnel-arrow">&#x25BC;</div>
+        <div class="funnel-connector"></div>
         <div class="funnel-step">
           <span class="funnel-step-num">3.1%</span>
           <span class="funnel-step-text">конверсия в целевое действие<br>прямо в момент звонка</span>
@@ -538,46 +835,102 @@
       </div>
 
       <div class="video-side">
-        <div class="video-side-label">Как это работает</div>
+        <div class="video-side-label">Демо: как работает агент</div>
         <div class="video-frame">
           <video src="veyra-demo.mp4" controls playsinline preload="metadata"></video>
         </div>
       </div>
     </section>
 
+    <!-- Stats ribbon -->
+    <div class="stats-ribbon animate-on-scroll" style="margin-top: 24px;">
+      <div class="stat-item">
+        <div class="stat-value">14 &#8381;</div>
+        <div class="stat-label">за минуту<br>разговора</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">50+</div>
+        <div class="stat-label">тест-кейсов<br>до запуска</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">2-4</div>
+        <div class="stat-label">недели<br>до пилота</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">работает<br>без выходных</div>
+      </div>
+    </div>
+
+    <!-- Wave 2 -->
+    <div class="wave-divider" style="padding: 16px 0 8px;">
+      <svg viewBox="0 0 900 24" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0 12 C225 4, 450 20, 675 12 S900 4, 900 12" stroke="#6366F1" stroke-width="1" opacity="0.2" fill="none"/>
+        <path d="M0 14 C200 22, 400 6, 600 14 S800 22, 900 14" stroke="#818CF8" stroke-width="0.8" opacity="0.12" fill="none"/>
+      </svg>
+    </div>
+
     <!-- How we launch -->
-    <section class="process">
+    <section class="process animate-on-scroll">
       <div class="process-label">Как запускаем</div>
       <div class="process-grid">
         <div class="process-step">
           <div class="process-step-num">01</div>
           <div class="process-step-title">Диагностика</div>
-          <div class="process-step-desc">Анализируем воронку, находим точки, где клиенты выпадают и бизнес теряет деньги</div>
+          <div class="process-step-desc">Анализируем воронку, находим точки, где клиенты выпадают</div>
           <span class="process-step-time">30 мин</span>
         </div>
         <div class="process-step">
           <div class="process-step-num">02</div>
           <div class="process-step-title">Проектирование</div>
-          <div class="process-step-desc">Создаём агента под конкретный сценарий: 50–150 тест-кейсов до запуска</div>
-          <span class="process-step-time">1–2 нед</span>
+          <div class="process-step-desc">Создаём агента под конкретный сценарий: 50-150 тест-кейсов</div>
+          <span class="process-step-time">1-2 нед</span>
         </div>
         <div class="process-step">
           <div class="process-step-num">03</div>
           <div class="process-step-title">Пилот</div>
-          <div class="process-step-desc">Запускаем на реальной базе, измеряем дозвон, конверсию и стоимость контакта</div>
-          <span class="process-step-time">2–4 нед</span>
+          <div class="process-step-desc">Запускаем на реальной базе, измеряем дозвон и конверсию</div>
+          <span class="process-step-time">2-4 нед</span>
         </div>
         <div class="process-step">
           <div class="process-step-num">04</div>
-          <div class="process-step-title">Масштабирование</div>
-          <div class="process-step-desc">Подключаем новые сценарии и точки воронки, растим покрытие базы</div>
+          <div class="process-step-title">Масштаб</div>
+          <div class="process-step-desc">Подключаем новые сценарии и растим покрытие базы</div>
           <span class="process-step-time">ongoing</span>
         </div>
       </div>
     </section>
 
+    <!-- Differentiators -->
+    <section class="diff-section animate-on-scroll">
+      <div class="diff-label">Почему VEYRA</div>
+      <div class="diff-grid">
+        <div class="diff-card">
+          <div class="diff-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L12.09 7.26L18 8.27L14 12.14L14.82 18.02L10 15.27L5.18 18.02L6 12.14L2 8.27L7.91 7.26L10 2Z" fill="#6366F1"/></svg>
+          </div>
+          <div class="diff-title">Не платформа</div>
+          <div class="diff-desc">Готовый агент под ваш сценарий, а не конструктор, который надо собирать</div>
+        </div>
+        <div class="diff-card">
+          <div class="diff-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="#6366F1" stroke-width="2"/><path d="M10 6V10L13 13" stroke="#6366F1" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="diff-title">Действие в звонке</div>
+          <div class="diff-desc">Клиент совершает целевое действие прямо во время разговора</div>
+        </div>
+        <div class="diff-card">
+          <div class="diff-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 10L6 14L18 4" stroke="#6366F1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="diff-title">Измеримый ROI</div>
+          <div class="diff-desc">Прозрачная экономика: стоимость контакта, конверсия, сравнение с КЦ</div>
+        </div>
+      </div>
+    </section>
+
     <!-- Cases -->
-    <section class="cases-section">
+    <section class="cases-section animate-on-scroll">
       <div class="cases-label">Кейсы</div>
       <div class="cases">
         <div class="case-card">
@@ -587,8 +940,8 @@
           </div>
           <p class="case-task">Массовая верификация клиентов через Госуслуги — push не справлялись, звонок проводит через процесс шаг за шагом</p>
           <div class="case-metrics">
-            <span><span class="case-metric-value">80K</span><span class="case-metric-label">звонков/нед</span></span>
-            <span><span class="case-metric-value">60%</span><span class="case-metric-label">дозвон</span></span>
+            <span class="case-metric"><span class="case-metric-value">80K</span><span class="case-metric-label"> звонков/нед</span></span>
+            <span class="case-metric"><span class="case-metric-value">60%</span><span class="case-metric-label"> дозвон</span></span>
           </div>
         </div>
         <div class="case-card">
@@ -598,15 +951,15 @@
           </div>
           <p class="case-task">Внутренний helpdesk для провизоров — AI-агент собирает данные, создаёт тикет и выдаёт номер заявки</p>
           <div class="case-metrics">
-            <span><span class="case-metric-value">95%</span><span class="case-metric-label">качество</span></span>
-            <span><span class="case-metric-value">0 сек</span><span class="case-metric-label">ожидание</span></span>
+            <span class="case-metric"><span class="case-metric-value">95%</span><span class="case-metric-label"> качество</span></span>
+            <span class="case-metric"><span class="case-metric-value">0 сек</span><span class="case-metric-label"> ожидание</span></span>
           </div>
         </div>
       </div>
     </section>
 
     <!-- CTA -->
-    <section class="cta">
+    <section class="cta animate-on-scroll">
       <div>
         <div class="cta-title">Диагностическая сессия — 30 минут</div>
         <div class="cta-subtitle">Разберём вашу задачу, найдём бутылочные горлышки в воронке и предложим сценарий пилота</div>
@@ -642,6 +995,22 @@
   </div>
 
   <script>
+    /* ── Scroll animations ── */
+    (function() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.animate-on-scroll').forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
+
+    /* ── Feedback ── */
     var WEBHOOK_URL = '';
     var CLIENT_ID = '';
     var PAGE_ID = 'one_pager';
